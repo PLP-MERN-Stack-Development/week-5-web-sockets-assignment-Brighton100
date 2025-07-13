@@ -15,11 +15,14 @@ const ChatRoom = () => {
             return;
         }
         const users = JSON.parse(localStorage.getItem('chatUsers') || '{}');
-        if (!users[resetUsername]) {
+        const entered = resetUsername.trim().toLowerCase();
+        // Find matching username (case-insensitive)
+        const match = Object.keys(users).find(u => u.trim().toLowerCase() === entered);
+        if (!match) {
             setResetError('Username does not exist');
             return;
         }
-        users[resetUsername] = resetPassword;
+        users[match] = resetPassword;
         localStorage.setItem('chatUsers', JSON.stringify(users));
         setResetError('Password reset successful!');
         setTimeout(() => {

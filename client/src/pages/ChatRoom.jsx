@@ -205,43 +205,43 @@ const ChatRoom = () => {
     };
 
     return (
-        <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl mx-auto my-8 rounded-2xl shadow-md bg-gray-100 flex flex-col h-[80vh]">
-            <div className="bg-teal-700 text-white py-4 px-6 font-bold text-lg text-center border-b border-gray-300 flex items-center justify-between">
+        <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl mx-auto my-8 rounded-2xl shadow-md flex flex-col h-[80vh] bg-[#ece5dd]" style={{background: '#ece5dd'}}>
+            <div className="py-4 px-6 font-bold text-lg text-center border-b flex items-center justify-between" style={{background: '#075e54', color: 'white', borderBottom: '1px solid #ddd'}}>
                 <span>Chat Room: {room}</span>
-                <button onClick={handleLogout} className="bg-red-400 hover:bg-red-500 text-white rounded-lg px-4 py-1 font-bold text-base ml-2 transition">Logout</button>
+                <button onClick={handleLogout} className="rounded-lg px-4 py-1 font-bold text-base ml-2 transition" style={{background: '#ff6b6b', color: 'white'}}>Logout</button>
             </div>
-            <div className="flex-1 flex flex-col px-4 py-2 overflow-y-auto bg-gray-50">
+            <div className="flex-1 flex flex-col px-4 py-2 overflow-y-auto" style={{background: '#fafafa'}}>
                 {messages.length === 0 ? (
-                    <p className="text-gray-500 text-center">No messages yet.</p>
+                    <p className="text-center" style={{color: '#888'}}>No messages yet.</p>
                 ) : (
                     messages.map((msg, i) => {
                         const isMe = msg.username === username;
                         return (
                             <div key={msg.id || i} className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-2 relative`}>
-                                <div className={`rounded-xl px-4 py-2 max-w-[70%] shadow-sm text-base break-words relative ${isMe ? 'bg-green-100' : 'bg-white'} text-gray-900`}>
-                                    <div className="font-bold text-sm mb-1">{msg.username}{msg.time ? ` [${msg.time}]` : ''}</div>
+                                <div className="rounded-xl px-4 py-2 max-w-[70%] shadow-sm text-base break-words relative" style={{background: isMe ? '#dcf8c6' : '#fff', color: '#222', fontSize: '1rem', wordBreak: 'break-word', position: 'relative'}}>
+                                    <div className="font-bold text-sm mb-1" style={{fontWeight: 'bold', fontSize: '0.95rem', marginBottom: 2}}>{msg.username}{msg.time ? ` [${msg.time}]` : ''}</div>
                                     {msg.file && msg.fileType && msg.fileType.startsWith('image') && (
-                                        <img src={msg.file} alt="uploaded" className="max-w-full rounded-lg my-2" />
+                                        <img src={msg.file} alt="uploaded" className="max-w-full rounded-lg my-2" style={{borderRadius: 8, margin: '6px 0'}} />
                                     )}
                                     {msg.file && msg.fileType && msg.fileType.startsWith('audio') && (
-                                        <audio controls src={msg.file} className="w-full my-2" />
+                                        <audio controls src={msg.file} className="w-full my-2" style={{width: '100%', margin: '6px 0'}} />
                                     )}
                                     {msg.file && msg.fileType && msg.fileType.startsWith('video') && (
-                                        <video controls src={msg.file} className="w-full my-2" />
+                                        <video controls src={msg.file} className="w-full my-2" style={{width: '100%', margin: '6px 0'}} />
                                     )}
                                     {msg.message && <div>{msg.message}</div>}
-                                    <div className="flex gap-2 mt-2">
-                                        <button onClick={() => handleDeleteLocal(msg.id)} className="text-xs bg-gray-200 rounded px-2 py-1 cursor-pointer">Delete for me</button>
-                                        <button onClick={() => handleDeleteGlobal(msg.id)} className="text-xs bg-red-400 text-white rounded px-2 py-1 cursor-pointer">Delete for everyone</button>
+                                    <div className="flex gap-2 mt-2" style={{display: 'flex', gap: 4, marginTop: 6}}>
+                                        <button onClick={() => handleDeleteLocal(msg.id)} className="text-xs rounded px-2 py-1 cursor-pointer" style={{fontSize: '0.85rem', background: '#eee', border: 'none', borderRadius: 6, padding: '2px 8px', cursor: 'pointer'}}>Delete for me</button>
+                                        <button onClick={() => handleDeleteGlobal(msg.id)} className="text-xs text-white rounded px-2 py-1 cursor-pointer" style={{fontSize: '0.85rem', background: '#ff6b6b', color: 'white', border: 'none', borderRadius: 6, padding: '2px 8px', cursor: 'pointer'}}>Delete for everyone</button>
                                     </div>
                                 </div>
                             </div>
                         );
                     })
                 )}
-                <p className="text-gray-500 italic mt-2">{isTyping}</p>
+                <p className="italic mt-2" style={{color: '#888', fontStyle: 'italic', margin: '8px 0 0 0'}}>{isTyping}</p>
             </div>
-            <div className="p-4 bg-gray-200 border-t border-gray-300">
+            <div className="p-4 border-t" style={{background: '#f0f0f0', borderTop: '1px solid #ddd'}}>
                 <form onSubmit={e => { e.preventDefault(); sendMessage(); }} className="flex flex-col gap-2">
                     <MessageInput
                         message={message}
@@ -259,7 +259,8 @@ const ChatRoom = () => {
                     />
                     <button
                         type="submit"
-                        className={`p-2 rounded-lg font-bold text-base border-none transition ${sending ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-400 hover:bg-green-500 text-gray-900 cursor-pointer'}`}
+                        className="p-2 rounded-lg font-bold text-base border-none transition"
+                        style={{background: sending ? '#ccc' : '#25d366', color: '#222', fontWeight: 'bold', fontSize: '1rem', border: 'none', cursor: sending ? 'not-allowed' : 'pointer'}}
                         disabled={sending || (!(message.trim() || file))}
                     >
                         {sending ? 'Sending...' : 'Send'}

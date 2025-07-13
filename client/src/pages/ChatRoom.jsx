@@ -223,12 +223,19 @@ const ChatRoom = () => {
     };
 
     return (
-        <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl mx-auto my-8 rounded-2xl shadow-md flex flex-col h-[80vh] bg-[#ece5dd]" style={{background: '#ece5dd'}}>
-            <div className="py-4 px-6 font-bold text-lg text-center border-b flex items-center justify-between" style={{background: '#075e54', color: 'white', borderBottom: '1px solid #ddd'}}>
+        <div
+            className="fixed inset-0 flex items-center justify-center bg-[#ece5dd]"
+            style={{background: '#ece5dd', zIndex: 1}}
+        >
+            <div
+                className="w-full max-w-lg sm:max-w-xl md:max-w-2xl rounded-2xl shadow-md flex flex-col h-[80vh]"
+                style={{background: '#ece5dd'}}
+            >
+                <div className="py-4 px-6 font-bold text-lg text-center border-b flex items-center justify-between" style={{background: '#075e54', color: 'white', borderBottom: '1px solid #ddd'}}>
                 <span>Chat Room: {room}</span>
                 <button onClick={handleLogout} className="rounded-lg px-4 py-1 font-bold text-base ml-2 transition" style={{background: '#ff6b6b', color: 'white'}}>Logout</button>
             </div>
-            <div className="flex-1 flex flex-col px-4 py-2 overflow-y-auto" style={{background: '#fafafa'}}>
+                <div className="flex-1 flex flex-col px-4 py-2 overflow-y-auto" style={{background: '#fafafa'}}>
                 {messages.length === 0 ? (
                     <p className="text-center" style={{color: '#888'}}>No messages yet.</p>
                 ) : (
@@ -259,7 +266,7 @@ const ChatRoom = () => {
                 )}
                 <p className="italic mt-2" style={{color: '#888', fontStyle: 'italic', margin: '8px 0 0 0'}}>{isTyping}</p>
             </div>
-            <div className="p-4 border-t" style={{background: '#f0f0f0', borderTop: '1px solid #ddd'}}>
+                <div className="p-4 border-t" style={{background: '#f0f0f0', borderTop: '1px solid #ddd'}}>
                 <form onSubmit={e => { e.preventDefault(); sendMessage(); }} className="flex flex-col gap-2">
                     <MessageInput
                         message={message}
@@ -284,6 +291,7 @@ const ChatRoom = () => {
                         {sending ? 'Sending...' : 'Send'}
                     </button>
                 </form>
+            </div>
             </div>
         </div>
     );

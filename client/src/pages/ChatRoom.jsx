@@ -3,6 +3,32 @@ import useSocket from '../hooks/useSocket';
 import ChatBox from '../components/ChatBox';
 import MessageInput from '../components/MessageInput';
 const ChatRoom = () => {
+    const [showReset, setShowReset] = useState(false);
+    const [resetUsername, setResetUsername] = useState('');
+    const [resetPassword, setResetPassword] = useState('');
+    const [resetError, setResetError] = useState('');
+
+    const handleResetPassword = (e) => {
+        e.preventDefault();
+        if (!resetUsername.trim() || !resetPassword.trim()) {
+            setResetError('Username and new password required');
+            return;
+        }
+        const users = JSON.parse(localStorage.getItem('chatUsers') || '{}');
+        if (!users[resetUsername]) {
+            setResetError('Username does not exist');
+            return;
+        }
+        users[resetUsername] = resetPassword;
+        localStorage.setItem('chatUsers', JSON.stringify(users));
+        setResetError('Password reset successful!');
+        setTimeout(() => {
+            setShowReset(false);
+            setResetUsername('');
+            setResetPassword('');
+            setResetError('');
+        }, 1500);
+    };
     const socket = useSocket();
     const [room, setRoom] = useState('general');
     const [message, setMessage] = useState('');
@@ -195,6 +221,12 @@ const ChatRoom = () => {
                             {authMode === 'login' ? 'Login' : 'Register'}
                         </button>
                     </form>
+                    <button
+                        style={{ width: '100%', padding: 8, borderRadius: 8, background: '#FFD700', color: '#222', fontWeight: 'bold', fontSize: '1rem', border: 'none', cursor: 'pointer', marginBottom: 8, marginTop: 4 }}
+                        onClick={() => { setShowReset(true); setResetError(''); }}
+                    >
+                        Forgot Password?
+                    </button>
                     {authError && <p style={{ color: '#ff6b6b', marginTop: 8 }}>{authError}</p>}
                     <p style={{ marginTop: 16 }}>
                         {authMode === 'login' ? (
@@ -209,6 +241,31 @@ const ChatRoom = () => {
                             </>
                         )}
                     </p>
+                    {showReset && (
+                        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.5)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ maxWidth: 350, width: '100%', background: '#fff', color: '#222', borderRadius: 12, padding: '2rem', boxShadow: '0 2px 12px rgba(0,0,0,0.2)', textAlign: 'center' }}>
+                                <h3 style={{ marginBottom: 16, fontWeight: 'bold', fontSize: '1.2rem' }}>Reset Password</h3>
+                                <form onSubmit={handleResetPassword}>
+                                    <input
+                                        value={resetUsername}
+                                        onChange={e => setResetUsername(e.target.value)}
+                                        placeholder="Username"
+                                        style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #ccc', fontSize: '1rem' }}
+                                    />
+                                    <input
+                                        type="password"
+                                        value={resetPassword}
+                                        onChange={e => setResetPassword(e.target.value)}
+                                        placeholder="New Password"
+                                        style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #ccc', fontSize: '1rem' }}
+                                    />
+                                    <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 8, background: '#FFD700', color: '#222', fontWeight: 'bold', fontSize: '1rem', border: 'none', cursor: 'pointer', marginBottom: 8 }}>Reset</button>
+                                </form>
+                                {resetError && <p style={{ color: resetError.includes('successful') ? '#25d366' : '#ff6b6b', marginTop: 8 }}>{resetError}</p>}
+                                <button style={{ marginTop: 12, background: 'none', color: '#075e54', border: 'none', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setShowReset(false)}>Close</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         );

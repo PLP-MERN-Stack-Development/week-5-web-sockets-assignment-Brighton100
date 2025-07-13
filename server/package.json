@@ -4,8 +4,8 @@
   "description": "Socket.io backend",
   "main": "server.js",
   "scripts": {
-    "kill-port": "powershell -Command \"Get-Process -Id (Get-NetTCPConnection -LocalPort 5050).OwningProcess | Stop-Process -Force\"",
-    "dev": "pnpm run kill-port && nodemon server.js"
+    "kill-port": "powershell -Command \"try { Get-Process -Id (Get-NetTCPConnection -LocalPort 5000).OwningProcess | Stop-Process -Force } catch { }\"",
+    "dev": "powershell -Command \"try { Get-Process -Id (Get-NetTCPConnection -LocalPort 5000).OwningProcess | Stop-Process -Force } catch { }\"; nodemon server.js"
   },
   "keywords": [],
   "author": "",

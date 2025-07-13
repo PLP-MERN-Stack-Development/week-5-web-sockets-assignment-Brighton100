@@ -1,0 +1,46 @@
+# Node
+node_modules/
+pnpm-lock.yaml
+
+# Build output
+/dist/
+/build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Misc
+*.log
+*.tmp
+
+# Coverage
+coverage/
+
+# React/Vite
+client/dist/
+client/build/
+
+# Server
+server/dist/
+server/build/
+
+# Others
+*.swp
+*.swo
+
+# Ignore public assets cache
+client/public/*.cache

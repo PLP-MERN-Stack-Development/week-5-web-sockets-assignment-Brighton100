@@ -112,6 +112,8 @@ The backend server will typically run on `http://localhost:3000` and the fronten
 └── README.md               # Project documentation
 
 ```
+## Deployed link for both client and sever: 
+https://week-5-web-sockets-assignment-brigh.vercel.app/
 
 ---
 

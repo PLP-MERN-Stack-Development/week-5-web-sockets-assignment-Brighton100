@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = React.useState(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io('https://week-5-web-sockets-assignment-brighton100.onrender.com');
     setSocket(newSocket);
     return () => {
       newSocket.disconnect();

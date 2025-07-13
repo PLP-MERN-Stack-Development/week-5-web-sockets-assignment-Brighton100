@@ -154,33 +154,16 @@ const ChatRoom = () => {
 
     if (!isAuthenticated) {
         return (
-            <div style={{
-                position: 'fixed',
-                inset: 0,
-                zIndex: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'linear-gradient(135deg, #232526 0%, #414345 100%)'
-            }}>
-                <div style={{
-                    maxWidth: 400,
-                    width: '100%',
-                    padding: '2rem',
-                    background: 'rgba(32,44,65,0.95)',
-                    borderRadius: 16,
-                    boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
-                    color: '#fff',
-                    textAlign: 'center',
-                }}>
-                    <h2 style={{ marginBottom: 24 }}>{authMode === 'login' ? 'Login' : 'Register'}</h2>
+            <div className="fixed inset-0 z-0 flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-700">
+                <div className="w-full max-w-md p-8 bg-gray-900 bg-opacity-95 rounded-2xl shadow-lg text-white text-center">
+                    <h2 className="mb-6 text-2xl font-bold">{authMode === 'login' ? 'Login' : 'Register'}</h2>
                     <form onSubmit={authMode === 'login' ? handleLogin : handleRegister}>
                         <input
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             placeholder="Username"
                             autoComplete="username"
-                            style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: 'none', fontSize: '1rem' }}
+                            className="w-full mb-3 p-2 rounded-lg border-none text-base bg-gray-800 text-white focus:outline-none"
                         />
                         <input
                             type="password"
@@ -188,23 +171,23 @@ const ChatRoom = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             autoComplete="current-password"
-                            style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: 'none', fontSize: '1rem' }}
+                            className="w-full mb-3 p-2 rounded-lg border-none text-base bg-gray-800 text-white focus:outline-none"
                         />
-                        <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 8, background: '#25d366', color: '#222', fontWeight: 'bold', fontSize: '1rem', border: 'none', cursor: 'pointer', marginBottom: 8 }}>
+                        <button type="submit" className="w-full p-2 rounded-lg bg-green-400 text-gray-900 font-bold text-base border-none cursor-pointer mb-2 transition hover:bg-green-500">
                             {authMode === 'login' ? 'Login' : 'Register'}
                         </button>
                     </form>
-                    {authError && <p style={{ color: '#ff6b6b', marginTop: 8 }}>{authError}</p>}
-                    <p style={{ marginTop: 16 }}>
+                    {authError && <p className="text-red-400 mt-2">{authError}</p>}
+                    <p className="mt-4">
                         {authMode === 'login' ? (
                             <>
                                 Don't have an account?{' '}
-                                <button style={{ background: 'none', color: '#25d366', border: 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => { setAuthMode('register'); setAuthError(''); }}>Register</button>
+                                <button className="bg-none text-green-400 border-none cursor-pointer font-bold" onClick={() => { setAuthMode('register'); setAuthError(''); }}>Register</button>
                             </>
                         ) : (
                             <>
                                 Already have an account?{' '}
-                                <button style={{ background: 'none', color: '#25d366', border: 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => { setAuthMode('login'); setAuthError(''); }}>Login</button>
+                                <button className="bg-none text-green-400 border-none cursor-pointer font-bold" onClick={() => { setAuthMode('login'); setAuthError(''); }}>Login</button>
                             </>
                         )}
                     </p>
@@ -222,90 +205,44 @@ const ChatRoom = () => {
     };
 
     return (
-        <div style={{
-            maxWidth: 500,
-            margin: '2rem auto',
-            borderRadius: 16,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-            background: '#ece5dd',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '80vh'
-        }}>
-            <div style={{
-                background: '#075e54',
-                color: 'white',
-                padding: '1rem',
-                fontWeight: 'bold',
-                fontSize: '1.2rem',
-                textAlign: 'center',
-                borderBottom: '1px solid #ddd',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-            }}>
+        <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl mx-auto my-8 rounded-2xl shadow-md bg-gray-100 flex flex-col h-[80vh]">
+            <div className="bg-teal-700 text-white py-4 px-6 font-bold text-lg text-center border-b border-gray-300 flex items-center justify-between">
                 <span>Chat Room: {room}</span>
-                <button onClick={handleLogout} style={{
-                    background: '#ff6b6b',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 8,
-                    padding: '6px 16px',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    fontSize: '1rem',
-                    marginLeft: 8
-                }}>Logout</button>
+                <button onClick={handleLogout} className="bg-red-400 hover:bg-red-500 text-white rounded-lg px-4 py-1 font-bold text-base ml-2 transition">Logout</button>
             </div>
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1rem', overflowY: 'auto', background: '#fafafa' }}>
+            <div className="flex-1 flex flex-col px-4 py-2 overflow-y-auto bg-gray-50">
                 {messages.length === 0 ? (
-                    <p style={{ color: '#888', textAlign: 'center' }}>No messages yet.</p>
+                    <p className="text-gray-500 text-center">No messages yet.</p>
                 ) : (
                     messages.map((msg, i) => {
                         const isMe = msg.username === username;
                         return (
-                            <div key={msg.id || i} style={{
-                                display: 'flex',
-                                justifyContent: isMe ? 'flex-end' : 'flex-start',
-                                marginBottom: 8,
-                                position: 'relative'
-                            }}>
-                                <div style={{
-                                    background: isMe ? '#dcf8c6' : '#fff',
-                                    color: '#222',
-                                    borderRadius: 12,
-                                    padding: '8px 14px',
-                                    maxWidth: '70%',
-                                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                                    fontSize: '1rem',
-                                    wordBreak: 'break-word',
-                                    position: 'relative'
-                                }}>
-                                    <div style={{ fontWeight: 'bold', fontSize: '0.95rem', marginBottom: 2 }}>{msg.username}{msg.time ? ` [${msg.time}]` : ''}</div>
+                            <div key={msg.id || i} className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-2 relative`}>
+                                <div className={`rounded-xl px-4 py-2 max-w-[70%] shadow-sm text-base break-words relative ${isMe ? 'bg-green-100' : 'bg-white'} text-gray-900`}>
+                                    <div className="font-bold text-sm mb-1">{msg.username}{msg.time ? ` [${msg.time}]` : ''}</div>
                                     {msg.file && msg.fileType && msg.fileType.startsWith('image') && (
-                                        <img src={msg.file} alt="uploaded" style={{ maxWidth: '100%', borderRadius: 8, margin: '6px 0' }} />
+                                        <img src={msg.file} alt="uploaded" className="max-w-full rounded-lg my-2" />
                                     )}
                                     {msg.file && msg.fileType && msg.fileType.startsWith('audio') && (
-                                        <audio controls src={msg.file} style={{ width: '100%', margin: '6px 0' }} />
+                                        <audio controls src={msg.file} className="w-full my-2" />
                                     )}
                                     {msg.file && msg.fileType && msg.fileType.startsWith('video') && (
-                                        <video controls src={msg.file} style={{ width: '100%', margin: '6px 0' }} />
+                                        <video controls src={msg.file} className="w-full my-2" />
                                     )}
                                     {msg.message && <div>{msg.message}</div>}
-                                    <div style={{ display: 'flex', gap: 4, marginTop: 6 }}>
-                                        <button onClick={() => handleDeleteLocal(msg.id)} style={{ fontSize: '0.85rem', background: '#eee', border: 'none', borderRadius: 6, padding: '2px 8px', cursor: 'pointer' }}>Delete for me</button>
-                                        <button onClick={() => handleDeleteGlobal(msg.id)} style={{ fontSize: '0.85rem', background: '#ff6b6b', color: 'white', border: 'none', borderRadius: 6, padding: '2px 8px', cursor: 'pointer' }}>Delete for everyone</button>
+                                    <div className="flex gap-2 mt-2">
+                                        <button onClick={() => handleDeleteLocal(msg.id)} className="text-xs bg-gray-200 rounded px-2 py-1 cursor-pointer">Delete for me</button>
+                                        <button onClick={() => handleDeleteGlobal(msg.id)} className="text-xs bg-red-400 text-white rounded px-2 py-1 cursor-pointer">Delete for everyone</button>
                                     </div>
                                 </div>
                             </div>
                         );
                     })
                 )}
-                <p style={{ color: '#888', fontStyle: 'italic', margin: '8px 0 0 0' }}>{isTyping}</p>
+                <p className="text-gray-500 italic mt-2">{isTyping}</p>
             </div>
-            <div style={{ padding: '1rem', background: '#f0f0f0', borderTop: '1px solid #ddd' }}>
-                <form onSubmit={e => { e.preventDefault(); sendMessage(); }} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div className="p-4 bg-gray-200 border-t border-gray-300">
+                <form onSubmit={e => { e.preventDefault(); sendMessage(); }} className="flex flex-col gap-2">
                     <MessageInput
                         message={message}
                         setMessage={setMessage}
@@ -317,21 +254,12 @@ const ChatRoom = () => {
                         type="file"
                         accept="image/*,audio/*,video/*"
                         onChange={e => setFile(e.target.files[0])}
-                        style={{ marginBottom: 8 }}
+                        className="mb-2"
                         disabled={sending}
                     />
                     <button
                         type="submit"
-                        style={{
-                            padding: 10,
-                            borderRadius: 8,
-                            background: sending ? '#ccc' : '#25d366',
-                            color: '#222',
-                            fontWeight: 'bold',
-                            fontSize: '1rem',
-                            border: 'none',
-                            cursor: sending ? 'not-allowed' : 'pointer'
-                        }}
+                        className={`p-2 rounded-lg font-bold text-base border-none transition ${sending ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-400 hover:bg-green-500 text-gray-900 cursor-pointer'}`}
                         disabled={sending || (!(message.trim() || file))}
                     >
                         {sending ? 'Sending...' : 'Send'}

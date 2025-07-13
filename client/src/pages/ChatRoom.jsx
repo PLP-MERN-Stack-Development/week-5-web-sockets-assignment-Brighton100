@@ -154,16 +154,34 @@ const ChatRoom = () => {
 
     if (!isAuthenticated) {
         return (
-            <div className="fixed inset-0 z-0 flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-700">
-                <div className="w-full max-w-md p-8 bg-gray-900 bg-opacity-95 rounded-2xl shadow-lg text-white text-center">
-                    <h2 className="mb-6 text-2xl font-bold">{authMode === 'login' ? 'Login' : 'Register'}</h2>
+            <div style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'linear-gradient(135deg, #FFD700 0%, #FFF8DC 100%)' // golden gradient
+            }}>
+                <div style={{
+                    maxWidth: 400,
+                    width: '100%',
+                    padding: '2rem',
+                    background: 'rgba(32,44,65,0.95)',
+                    borderRadius: 16,
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
+                    color: '#fff',
+                    textAlign: 'center',
+                }}>
+                    <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFD700', marginBottom: 12, letterSpacing: 2 }}>Brighton Mark</h1>
+                    <h2 style={{ marginBottom: 24 }}>{authMode === 'login' ? 'Login' : 'Register'}</h2>
                     <form onSubmit={authMode === 'login' ? handleLogin : handleRegister}>
                         <input
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             placeholder="Username"
                             autoComplete="username"
-                            className="w-full mb-3 p-2 rounded-lg border-none text-base bg-gray-800 text-white focus:outline-none"
+                            style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: 'none', fontSize: '1rem' }}
                         />
                         <input
                             type="password"
@@ -171,23 +189,23 @@ const ChatRoom = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             autoComplete="current-password"
-                            className="w-full mb-3 p-2 rounded-lg border-none text-base bg-gray-800 text-white focus:outline-none"
+                            style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: 'none', fontSize: '1rem' }}
                         />
-                        <button type="submit" className="w-full p-2 rounded-lg bg-green-400 text-gray-900 font-bold text-base border-none cursor-pointer mb-2 transition hover:bg-green-500">
+                        <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 8, background: '#25d366', color: '#222', fontWeight: 'bold', fontSize: '1rem', border: 'none', cursor: 'pointer', marginBottom: 8 }}>
                             {authMode === 'login' ? 'Login' : 'Register'}
                         </button>
                     </form>
-                    {authError && <p className="text-red-400 mt-2">{authError}</p>}
-                    <p className="mt-4">
+                    {authError && <p style={{ color: '#ff6b6b', marginTop: 8 }}>{authError}</p>}
+                    <p style={{ marginTop: 16 }}>
                         {authMode === 'login' ? (
                             <>
                                 Don't have an account?{' '}
-                                <button className="bg-none text-green-400 border-none cursor-pointer font-bold" onClick={() => { setAuthMode('register'); setAuthError(''); }}>Register</button>
+                                <button style={{ background: 'none', color: '#25d366', border: 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => { setAuthMode('register'); setAuthError(''); }}>Register</button>
                             </>
                         ) : (
                             <>
                                 Already have an account?{' '}
-                                <button className="bg-none text-green-400 border-none cursor-pointer font-bold" onClick={() => { setAuthMode('login'); setAuthError(''); }}>Login</button>
+                                <button style={{ background: 'none', color: '#25d366', border: 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => { setAuthMode('login'); setAuthError(''); }}>Login</button>
                             </>
                         )}
                     </p>

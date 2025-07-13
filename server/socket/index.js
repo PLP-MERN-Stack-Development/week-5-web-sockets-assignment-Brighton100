@@ -1,7 +1,30 @@
 // socket/index.js
 module.exports = function (io) {
+    // Track online users by username
+    const onlineUsers = {};
+
     io.on('connection', (socket) => {
         console.log('Client connected:', socket.id);
+
+        // Listen for username on join
+        socket.on('join_room', (room) => {
+            socket.join(room);
+            console.log(`User joined room: ${room}`);
+            // Save username for this socket
+            socket.on('set_username', (username) => {
+                if (username) {
+                    onlineUsers[socket.id] = username;
+                    io.emit('online_users', Object.values(onlineUsers));
+                }
+            });
+        });
+
+        // Remove user on disconnect
+        socket.on('disconnect', () => {
+            delete onlineUsers[socket.id];
+            io.emit('online_users', Object.values(onlineUsers));
+            console.log('Client disconnected:', socket.id);
+        });
 
         socket.on('send_message', (data) => {
             const timestamp = new Date().toLocaleTimeString();
@@ -36,10 +59,7 @@ module.exports = function (io) {
             socket.to(room).emit('user_typing', username);
         });
 
-        socket.on('join_room', (room) => {
-            socket.join(room);
-            console.log(`User joined room: ${room}`);
-        });
+        // ...existing code...
 
         socket.on('disconnect', () => {
             console.log('Client disconnected:', socket.id);

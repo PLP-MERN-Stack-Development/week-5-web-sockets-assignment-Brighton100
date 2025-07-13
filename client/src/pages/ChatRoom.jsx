@@ -3,6 +3,7 @@ import useSocket from '../hooks/useSocket';
 import ChatBox from '../components/ChatBox';
 import MessageInput from '../components/MessageInput';
 const ChatRoom = () => {
+    const [onlineUsers, setOnlineUsers] = useState([]);
     const [showReset, setShowReset] = useState(false);
     const [resetUsername, setResetUsername] = useState('');
     const [resetPassword, setResetPassword] = useState('');
@@ -65,6 +66,10 @@ const ChatRoom = () => {
     useEffect(() => {
         if (!socket || !isAuthenticated) return;
         socket.emit('join_room', room);
+        socket.emit('set_username', username);
+        socket.on('online_users', (users) => {
+            setOnlineUsers(users);
+        });
         socket.on('receive_message', (data) => {
             setMessages((prev) => {
                 const updated = [...prev, data.file && data.fileType
@@ -90,6 +95,7 @@ const ChatRoom = () => {
             socket.off('receive_message');
             socket.off('delete_message');
             socket.off('user_typing');
+            socket.off('online_users');
         };
     }, [room, socket, isAuthenticated]);
 
@@ -292,9 +298,12 @@ const ChatRoom = () => {
                 style={{background: '#ece5dd'}}
             >
                 <div className="py-4 px-6 font-bold text-lg text-center border-b flex items-center justify-between" style={{background: '#075e54', color: 'white', borderBottom: '1px solid #ddd'}}>
-                <span>Chat Room: {room}</span>
-                <button onClick={handleLogout} className="rounded-lg px-4 py-1 font-bold text-base ml-2 transition" style={{background: '#ff6b6b', color: 'white'}}>Logout</button>
-            </div>
+                    <span>Chat Room: {room}</span>
+                    <button onClick={handleLogout} className="rounded-lg px-4 py-1 font-bold text-base ml-2 transition" style={{background: '#ff6b6b', color: 'white'}}>Logout</button>
+                </div>
+                <div style={{background: '#fafafa', borderBottom: '1px solid #ddd', padding: '0.5rem 1rem', fontSize: '0.95rem', color: '#075e54', fontWeight: 'bold'}}>
+                    Online: {onlineUsers.length > 0 ? onlineUsers.join(', ') : 'No users online'}
+                </div>
                 <div className="flex-1 flex flex-col px-4 py-2 overflow-y-auto" style={{background: '#fafafa'}}>
                 {messages.length === 0 ? (
                     <p className="text-center" style={{color: '#888'}}>No messages yet.</p>
